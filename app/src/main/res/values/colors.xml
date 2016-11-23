@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00b0ff</color>
+    <color name="colorPrimaryDark">#78909c</color>
+    <color name="colorAccent">#212121</color>
+    <color name="dialogBackground">#00000f</color>
+    <color name="black">#7e57c2</color>
+    <color name="primary_text_inverse">#000000</color>
+    <color name="primary_text">#000000</color>
+    <color name="background">#757575</color>
+    <color name="primary_text_material_dark">#000000</color>
+    <color name="secondary_text_material_light">#000000</color>
+    <color name="secondary_text_material_dark">#000000</color>
+    <color name="primary_text_material_light">#000000</color>
+    <color name="foreground">#212121</color>
+    <color name="colorBackground">#000000</color>
+    <color name="white">#000000</color>
+</resources>
