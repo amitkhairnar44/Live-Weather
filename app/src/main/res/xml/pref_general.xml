@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+     >
     <EditTextPreference
         android:key="@string/pref_location_key"
         android:title="@string/pref_location_label"
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:singleLine="true"
+        android:textColor="@color/primary_text"
+        android:textColorHighlight="@color/primary_text"
+        android:textColorPrimary="@color/primary_text"
+        android:textColorSecondary="@color/primary_text"
+        android:theme="@style/AppTheme"
         />
     <ListPreference
         android:entries="@array/pref_units_options"
