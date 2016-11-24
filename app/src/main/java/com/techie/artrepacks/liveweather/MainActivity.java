@@ -1,34 +1,46 @@
 package com.techie.artrepacks.liveweather;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 public class MainActivity extends AppCompatActivity {
+    public void alert()
+    {
+        String about = "Live Weather";
+        String version = "Version: 16.7.27";
+        String about1 = "Developed by: Amit Khairnar";
+	//Creating AlertDialog for displaying the information
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(R.string.title_activity_about);
+        alertDialog.setMessage(about+"\n"+version+ "\n"+ about1 );
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+	//Loading Ad 
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar snackbar = Snackbar.make(view, "Created By Techie :)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null);
-                View sbView = snackbar.getView();
-                sbView.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.black));
-                snackbar.show();
-            }
-        });
     }
 
     @Override
@@ -47,8 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+	
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
+        }
+        if (id == R.id.about)
+        {
+           alert();
         }
                  return super.onOptionsItemSelected(item);
     }
