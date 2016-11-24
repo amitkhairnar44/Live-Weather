@@ -18,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +41,10 @@ import java.util.Locale;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+    protected double pressure;
+    int errorCode;
+    String city;
+    int humidity;
     private ArrayAdapter<String> mForecastAdapter;
 
     public MainActivityFragment() {
@@ -47,6 +55,7 @@ public class MainActivityFragment extends Fragment {
     {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -66,6 +75,18 @@ public class MainActivityFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void getErrorCode()
+    {
+        if (errorCode == 1)
+        {
+            Toast.makeText(getContext(), "Connection Problem! Check your network connection", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(getContext(), "Connected!", Toast.LENGTH_LONG).show();
+        }
+    }
     //Method to update weather
     private void updateweather()
     {
@@ -73,6 +94,8 @@ public class MainActivityFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = prefs.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
         weatherTask.execute(location);
+        //getErrorCode();
+        //alert();
     }
 
     @Override
@@ -98,7 +121,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long length)
             {
-                String forecast = mForecastAdapter.getItem(position);
+                String forecast = mForecastAdapter.getItem(position)+ "\nCity: " + city;
                 Intent intent = new Intent(getActivity(),DetailActivity.class).putExtra(Intent.EXTRA_TEXT, forecast);
                 startActivity(intent);
             }
@@ -131,7 +154,11 @@ public class MainActivityFragment extends Fragment {
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
             //String highLowStr = roundedHigh +"/"+roundedLow;
-            return roundedHigh +"/"+roundedLow;
+		// Code to return °C and °F
+		// if(unitType.equals(getString(R.string.pref_units_metric)))
+//
+//
+            return roundedHigh+"/"+roundedLow;
         }
 
         private String[] getWeatherDataFromJson(String forecastJsonStr, int noOfDays)throws JSONException
@@ -142,8 +169,19 @@ public class MainActivityFragment extends Fragment {
             final String OWM_MAX = "max";
             final String OWM_MIN = "min";
             final String OWM_DESCRIPTION = "main";
+            final String OWM_CITY = "city";
+            final String OWM_NAME = "name";
+            final String OWM_PRESSURE = "pressure";
+            final String OWM_HUMIDITY = "humidity";
+            final String OWM_WEATHERID = "id";
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+            JSONObject cityObject = forecastJson.getJSONObject(OWM_CITY);
+            city = cityObject.getString(OWM_NAME);
+            //
+
+            Log.i(LOG_TAG,"City is:"+city);
+            Log.i(LOG_TAG,"Data:"+forecastJsonStr);
             Time dayTime = new Time();
             dayTime.setToNow();
             int julianStartDay = Time.getJulianDay(System.currentTimeMillis(),dayTime.gmtoff);
@@ -162,13 +200,23 @@ public class MainActivityFragment extends Fragment {
 
                 JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                 description = weatherObject.getString(OWM_DESCRIPTION);
-
+                int id = weatherObject.getInt(OWM_WEATHERID);
+                Log.i(LOG_TAG,"ID: "+id);
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
                 double high = temperatureObject.getDouble(OWM_MAX);
+                Log.i(LOG_TAG,"High:"+high);
                 double low = temperatureObject.getDouble(OWM_MIN);
-
+                //JSONObject to get pressure
+                JSONObject pressureObject = weatherArray.getJSONObject(i);
+                pressure = pressureObject.getDouble(OWM_PRESSURE);
+                //JSONObject to get humidity
+                JSONObject humidityObject = weatherArray.getJSONObject(i);
+                humidity = humidityObject.getInt(OWM_HUMIDITY);
+                //JSONObject to get weather <code>Hello</code>
+                Log.i(LOG_TAG,"HUM:"+humidity);
+                Log.i(LOG_TAG,"Pressure:"+pressure);
                 highAndLow = formatHighLows(high, low);
-                resultStrs[i] = day + "-" + description + "-" + highAndLow;
+                resultStrs[i] = day + "-" + description + "-" + highAndLow + "\nHumidity: " + humidity + "\nPressure: " + pressure ;
             }
             for (String s : resultStrs)
             {
@@ -190,6 +238,7 @@ public class MainActivityFragment extends Fragment {
             String unit = "metric";
             final String apiKey= "6995c22f85d1e50c35b08c56f9be8d2c";
             int noOfDays = 7;
+            //TODO:Code openweathermap
             //Code to get the data from the openweathermap
             try{
                 final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
@@ -231,6 +280,8 @@ public class MainActivityFragment extends Fragment {
             }
             catch(IOException e){
                 Log.e(LOG_TAG,"Error",e);
+                errorCode = 1;
+
                 return null;
             }
             finally {
