@@ -21,7 +21,6 @@ public class DetailActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
     }
 
@@ -34,6 +33,7 @@ public class DetailActivityFragment extends Fragment {
         {
             String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
             ((TextView) rootView.findViewById(R.id.detail_text)).setText(forecastStr);
+            //().setText();
         }
         return rootView;
     }
@@ -41,7 +41,6 @@ public class DetailActivityFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-
             return true;
         }
         return super.onOptionsItemSelected(item);
