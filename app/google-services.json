@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "220810016673",
+    "firebase_url": "https://project-8882945427725656262.firebaseio.com",
+    "project_id": "project-8882945427725656262",
+    "storage_bucket": "project-8882945427725656262.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220810016673:android:a7b53f32f1537c03",
+        "android_client_info": {
+          "package_name": "com.techie.artrepacks.liveweather"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220810016673-9s5op7g1j9kod86n6crrlrv65vaneu0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUWbVyWjnkrIG62ILuU_sJKMJsDa_b3F8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
